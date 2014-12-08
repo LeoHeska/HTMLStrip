@@ -1,0 +1,115 @@
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+--
+-- HTMLStrip regular expression configuration file
+-- Version 1.0
+--
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+--
+-- This is the regular expressions file used by HTMLStrip in finding
+-- and eliminating or substituting HTML tags.
+--
+-- You need not use this file.  If you run HTMLStrip without any input file,
+-- HTMLStrip will carry out default stripping, using regular expressions
+-- contained in the HTMLStrip program itself.
+--
+-- This file as distributed from SourceForge.net contains the same
+-- regular expressions as the HTMLStrip internal defaults.
+--
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//
+// Note that any lines beginning with // or -- are treated as comments.
+//
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+--
+-- You may change the behavior of HTMLStrip by editing this file.  Each
+-- non-commented line contains:
+--
+--   1)  A regular expression, followed by
+--   2)  The tab (or "horizontal tab", ASCII 9) character, followed by
+--   3)  (optional) replacement text you wish HTMLStrip to include in the
+--       output file instead of the text matching the regular expression.
+--
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+--
+-- Notes:
+--
+-- Regular expressions are cryptic and complex, as you may see.  It takes
+-- time and care to learn to use them skillfully.  Be careful!  Make backup
+-- copies of your files, and check your output carefully.
+--
+-- Java 1.4 and 1.5 contain a bug in which regular expressions of the form
+-- 
+--    (x|y)* (
+--
+-- (meaning either x or y repeated some number of times) can cause a stack
+-- overflow.  Information about this bug is available at
+--
+--   http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6337993
+--
+-- So, be careful to avoid using regular expressions of this form, until
+-- and unless that bug gets fixed.
+--
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+--
+-- We don't need no stinkin' doc types...
+<!DOCTYPE[^>]+>	
+--
+-- Let's keep our "body"s clean...
+<body lang=[^>]+>	<body>
+--
+-- I asked for HTML, not XML...
+ xmlns[^>]+>	
+--
+-- If I wanted style and class I'd move to Italy or France...
+\s?class=\w+	
+\s+style='[^']+'	
+--
+-- I never did like the word "meta"...
+<meta[^>]*?>	
+--
+-- What does the link tag do, anyway?
+<link[^>]*?>	
+--
+-- "The story of O" was a bad movie; jettison this tag in its memory...
+</?o:[^>]*?>	
+--
+-- Maybe my prior remarks about "style" were too "div"-isive...
+</?style[^>]*?>	
+</?div[^>]*?>	
+--
+-- If I needed any STDs I could go to the red light district...
+</?st\d[^>]*?>	
+--
+-- Let's not throw a spanner in the works...
+</?span[^>]*?>	
+--
+-- If I can't even comprehend it, I don't want it...
+<!\[[^>]*?>	
+--
+-- Don't know what the w's signify but get rid of 'em...
+<!--\w+?-->	
+<!--\W+?-->	
+--
+-- You call this HTML?!?!?!
+-- Empty paragraph tags
+(<[^>]+>)+&nbsp;(</\w+>)+	
+--
+-- v: elements cluttering the <img> tags
+\s+v:\w+="[^"]+"	
+--
+-- Why clutter with paragraph tags?  Simple <br>s work perfectly well.
+<p class=[^>]+>	
+<p>	
+</p>	<br><br>
+--
+-- Clean <br> tags
+<br[^>]*?>	<br>
+-- extra lines
+(\n\r){2,}	
+(\n){2,}	
+(\r){2,}	
+--
+-- This stuff comes from MS-Word, or somewhere; standardize it...
+ô	&ldquo;
+ö	&rdquo;
+Ú	&mdash;
